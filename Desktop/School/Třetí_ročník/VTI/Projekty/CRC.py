@@ -2,6 +2,7 @@ import numpy as np
 from itertools import product
 
 def check_format(input):
+    """Checks if inputs are binary."""
     input =  str(input)
     for i in input:
         if i != "0" and i != "1":
@@ -61,7 +62,8 @@ def find_genpol(data):
             r = n - k
             break
     else:
-        raise ValueError("Must be a Hamming code.")
+        return ValueError("Must be a Hmming code"), False
+        
 
     genpols = []
     polynomials = []
