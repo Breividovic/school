@@ -1,4 +1,3 @@
-import numpy as np
 from itertools import product
 
 def check_format(input):
@@ -10,6 +9,22 @@ def check_format(input):
             return False
     else: 
         return input
+
+def pol_format(bin):
+    """Return binary data in polynomial form."""
+    bin=bin[::-1]
+    pol_members=[]
+
+    for i in reversed(range(len(bin))):
+        if bin[i] != "0":
+            pol_members.append(f"x^{i}")
+
+    if "x^1" in pol_members:
+            pol_members[pol_members.index("x^1")] = "x"
+    if "x^0" in pol_members:
+            pol_members[pol_members.index("x^0")] = "1"
+    pol = " + ".join(pol_members)
+    return pol
         
 
 def poly_mod_div(num,den):
@@ -148,7 +163,8 @@ def decoder(received,genpol):
         corrected_data = error_correction(received,error_index)
 
         print(f"Error occured during transmission in x^{error_deg}")
-        print("Data after error correction --> ",corrected_data)
+        print("Data after error correction -->",corrected_data,": ",pol_format(corrected_data))
+        print("------------------------------------------------")
 
         return corrected_data, error_deg
 
@@ -159,25 +175,25 @@ if __name__ == "__main__":
     while check_format(data) == False:
         data = input("Enter your data in BINARY please: ")
     
+    print("Data in polynomial form:" ,pol_format(data))
+    
     print("------------------------------------------------")
     print("List of available generator polynomials: ")
     for pol in find_genpol(data):
-        print(pol)  
+        print(pol,": ",pol_format(pol))  
     print("------------------------------------------------")
-    genpol = input("Please choose one generator polynomial: ")
+    genpol = input("Please choose one generator polynomial (binary form): ")
     while genpol not in find_genpol(data):
         genpol = input("Please enter one of above-mentioned: ")
 
     print("------------------------------------------------")
     sent_data = encoder(data,genpol)
-    polynom = np.polynomial.Polynomial([int(i) for i in sent_data][::-1])
-    print("Sent data in binary --> ",sent_data)
+    polynom = pol_format(sent_data)
+    print("Sent data -->",sent_data,": ",pol_format(sent_data))
     print("------------------------------------------------")
-    print("Sent data in polynomial form: \n")
-    print(polynom)
-    
-    print("------------------------------------------------")
+  
     received = input("Enter received data in binary please: ")
+    print("Data received in polynomial form: ",pol_format(received))
     while check_format(received) == False:
         received = input("Enter your data in BINARY please: ")
     print("------------------------------------------------")
