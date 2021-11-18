@@ -3,7 +3,7 @@ def H_to_G(H):
     Generating matrix (systematic and unsystematic) is then generated from control matrix. 
     
     Control matrix MUST be binary.
-    For more info check Hamming Codes
+    For more info check Hamming Codes.
     """
     def transpose(M):
         return [[M[j][i] for j in range(len(M))] for i in range(len(M[0]))]
@@ -41,7 +41,7 @@ def H_to_G(H):
     for i in range(k): eye[i][i] = 1 
 
     for row in eye: 
-        if row not in H_T: raise ValueError("Systematic matrix coulnd't be generated")
+        if row not in H_T: raise ValueError("Systematic matrix couldn't be generated.")
 
     Hs = transpose(H_T)
 
