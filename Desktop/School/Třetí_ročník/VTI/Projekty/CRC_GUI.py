@@ -78,7 +78,7 @@ def find_genpol(data):
             r = n - k
             break
     else:
-        return False
+        return ValueError("Must be a Hmming code"), False
         
 
     genpols = []
@@ -242,7 +242,7 @@ def start_gui():
             wrong_data_label.pack()
         elif len(data_entry.get()) == 0:
             no_data_label.pack()
-        elif find_genpol(data_entry.get()) == False:
+        elif find_genpol(data_entry.get())[1] == False:
             #first_button.config(state="disabled")
             not_hamming_label.pack()
         else:
