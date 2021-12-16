@@ -77,7 +77,7 @@ def find_genpol(data):
             r = n - k
             break
     else:
-        return ValueError("Must be a Hmming code"), False
+        return ValueError("Must be a Hamming code"), False
         
 
     genpols = []
@@ -90,7 +90,7 @@ def find_genpol(data):
     del polynomials[0] # getting rid of 000
 
     for pol in polynomials:
-        if poly_mod_div(dividend,pol) == "" and len(pol.lstrip("0")) == r+1:  
+        if poly_mod_div(dividend,pol) == "0" and len(pol.lstrip("0")) == r+1:  
             genpols.append(pol)
     
     return genpols
@@ -107,13 +107,13 @@ def error_correction(pol,error_index):
 
     corrected = ""
     for i in range(len(pol)):
-            if i == error_index:
-                if pol[i] == "1": 
-                    corrected += "0"
-                else: 
-                    corrected += "1" 
-            else:
-                corrected += pol[i]
+        if i == error_index:
+            if pol[i] == "1": 
+                corrected += "0"
+            else: 
+                corrected += "1" 
+        else:
+            corrected += pol[i]
     return corrected
 
 
@@ -148,7 +148,7 @@ def decoder(received,genpol):
     corrected_data = ""
     remainder = poly_mod_div(received,genpol)
 
-    if remainder == "":
+    if remainder == "0":
         print("No error occured during transmission")
         return received
 
@@ -193,9 +193,9 @@ if __name__ == "__main__":
     print("------------------------------------------------")
   
     received = input("Enter received data in binary please: ")
-    print("Data received in polynomial form: ",pol_format(received))
     while check_format(received) == False:
         received = input("Enter your data in BINARY please: ")
+    print("Data received in polynomial form: ",pol_format(received))
     print("------------------------------------------------")
     decoder(received,genpol)
 
